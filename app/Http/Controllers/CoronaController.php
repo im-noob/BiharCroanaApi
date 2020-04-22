@@ -11,7 +11,7 @@ class CoronaController extends Controller
 {
     public function bihar()
     {
-        $corona = Corona::where('updated_at','>',Carbon::now()->subMinute(1)->toDateTimeString())->get();
+        $corona = Corona::where('updated_at','>',Carbon::now()->subMinute(env('UPDATE_FREQUENCY',5))->toDateTimeString())->get();
         /*Checking for First time*/
         if (count($corona) === 0) {
             $this->updateDatabase();
@@ -51,8 +51,12 @@ class CoronaController extends Controller
         if ($err) {
 //            echo "cURL Error #:" . $err;
         } else {
-            $corona = new Corona();
+            $corona = Corona::first();
+            if(empty($corona)){
+                $corona = new Corona();
+            }            
             $corona->data = $response;
+            $corona->updated_at = Carbon::now();
             $corona->save();
         }
 
