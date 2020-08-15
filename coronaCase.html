@@ -7,21 +7,21 @@
 
 	<style type="text/css">
 		.Level {
-		    display: flex;
+		    /*display: flex;
 		    flex-direction: row;
 		    justify-content: space-between;
-		    align-self: center;
-		    width: 35rem;
+		    align-self: center;*/
+		    /*width: 30rem;*/
 		}
-		div {
+		/*div {
 		    display: block;
-		}
-		body {
+		}*/
+		/*body {
 		    padding: 0;
 		    margin: 0;
 		    -webkit-tap-highlight-color: transparent;
 		    -webkit-touch-callout: none;
-		}
+		}*/
 		.Level .is-cherry h1, .Level .is-cherry h5 {
 		    color: #ff073a;
 		}
@@ -37,40 +37,41 @@
 		.Level .is-green h1, .Level .is-green h5 {
 		    color: #28a745;
 		}
-		.Level h4 {
+		/*.Level h4 {
 		    margin-bottom: -.5rem;
 		}
 		.Level h1, .Level h5 {
 		    margin-bottom: 0;
-		}
+		}*/
 		.Level h1 {
 		    font-weight: 600;
 		}
 		.Level .level-item>* {
 		    align-self: center;
+		    text-align: center;
 		}
 	</style>
 
 
-	<div class="container">
+	<div class="container-fluid">
 
-		<div class="Level">
-		   <div class="level-item is-cherry fadeInUp" style="animation-delay: 1s;">
+		<div class="Level row">
+		   <div class="level-item is-cherry fadeInUp col-sm-3 col-md-3" style="animation-delay: 1s;">
 		      <h5>Confirmed</h5>
 		      <!-- <h4>[+1,461]</h4> -->
 		      <h1 id="confirmed">0</h1>
 		   </div>
-		   <div class="level-item is-blue fadeInUp" style="animation-delay: 1.1s;">
+		   <div class="level-item is-blue fadeInUp col-sm-3 col-md-3" style="animation-delay: 1.1s;">
 		      <h5 class="heading">Active</h5>
 		      <!-- <h4>&nbsp;</h4> -->
 		      <h1 class="title has-text-info" id="active">0</h1>
 		   </div>
-		   <div class="level-item is-green fadeInUp" style="animation-delay: 1.2s;">
+		   <div class="level-item is-green fadeInUp col-sm-3 col-md-3" style="animation-delay: 1.2s;">
 		      <h5 class="heading">Recovered</h5>
 		      <!-- <h4>[+658]</h4> -->
 		      <h1 class="title has-text-success" id="recovered">0</h1>
 		   </div>
-		   <div class="level-item is-gray fadeInUp" style="animation-delay: 1.3s;">
+		   <div class="level-item is-gray fadeInUp col-sm-3 col-md-3" style="animation-delay: 1.3s;">
 		      <h5 class="heading">Deceased</h5>
 		      <!-- <h4>[+53]</h4> -->
 		      <h1 class="title has-text-grey" id="deceased">0</h1>
@@ -79,15 +80,15 @@
 
 
 
-		<table class="table table-hover table-responsive mt-3" id="table-corona">
+		<table class="table table-hover mt-3" id="table-corona">
 			<thead>
 				<tr>
-					<th scope="col">#</th>
-					<th scope="col">District</th>
-					<th scope="col">Confirmed</th>
-					<th scope="col">Active</th>
-					<th scope="col">Recovered</th>
-					<th scope="col">Deceased</th>
+					<!-- <th scope="col">#</th> -->
+					<th scope="col">DIST.</th>
+					<th scope="col">CNF.</th>
+					<th scope="col">ACT.</th>
+					<th scope="col">REC.</th>
+					<th scope="col">DEA.</th>
 				</tr>
 			</thead>
 			<tbody id="tbody">
@@ -152,7 +153,7 @@
 				$deceased = districtData[i]['deceased'];
 
 				let row = '<tr>'+
-				    '  <th scope="row">'+i+'</th>'+  
+				    // '  <th scope="row">'+i+'</th>'+  
 				    '  <td>'+$district+'</td>'+
 				    '  <td>'+$confirmed +'</td>'+
 				    '  <td>'+$active+'</td>'+
@@ -171,11 +172,11 @@
 				 "bInfo" : false,
 			});
 
-			t.on( 'order.dt search.dt', function () {
-		        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-		            cell.innerHTML = i+1;
-		        } );
-		    } ).draw();
+			// t.on( 'order.dt search.dt', function () {
+		 //        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
+		 //            cell.innerHTML = i+1;
+		 //        } );
+		 //    } ).draw();
 		}
 		/*State Data:END*/
 
@@ -199,11 +200,20 @@
 			$('#active').text(bihar_data['active']);
 			$('#deceased').text(bihar_data['deaths']);
 			$('#recovered').text(bihar_data['recovered']);
-			console.log(bihar_data);
+			// console.log(bihar_data);
 		}
 		/*District Wise DATA:END*/
 
-
+$.ajax({
+    type: "GET",
+    url: "https://www.covid19india.org/maps/bihar.json",
+    dataType:'json',
+    success: function( data ) {
+        check = true;
+        ajaxMap = data;
+        drawMap(data);
+    }
+});
 
 
 	});
@@ -217,12 +227,17 @@
 
 
 
-	/*https://api.rootnet.in/covid19-in/unofficial/covid19india.org/statewise*/
-	/*https://api.covid19india.org/v2/state_district_wise.json*/
-	/*https://api.covid19india.org/data.json*/
-	/*https://bcabyaarav.000webhostapp.com/api/bihar-corona*/
-
 
 </script>
 </body>
 </html>
+
+
+
+
+
+
+	/*https://api.rootnet.in/covid19-in/unofficial/covid19india.org/statewise*/
+	/*https://api.covid19india.org/v2/state_district_wise.json*/
+	/*https://api.covid19india.org/data.json*/
+	/*https://bcabyaarav.000webhostapp.com/api/bihar-corona*/
